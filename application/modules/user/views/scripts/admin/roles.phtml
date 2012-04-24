@@ -1,0 +1,27 @@
+<?php $this->adminCurrentSubmenu(); ?>
+<table class="admin-table-list">
+	<tr>
+		<th width="20">ID</th>
+		<th>Name</th>
+		<th width="10">Actions</th>
+	</tr>
+	<?php foreach ($this->pager->execute() as $item) {?>
+	<tr>
+		<td align="center"><?php echo $item->id; ?></td>
+		<td>
+                    <a class="edit-item" href="<?php echo $this->url(array('action'=>'edit-role','module'=>'user', 'id'=>$item->id));?>">
+                        <?php echo $item->name; ?>
+                    </a>
+                </td>
+
+		<td align="center" nowrap="nowrap">
+			<a class="edit-item" href="<?php echo $this->url(array('action'=>'edit-role','module'=>'user', 'id'=>$item->id));?>">
+				Edit
+			</a>&nbsp;
+			<a  class="delete-item" href="<?php echo $this->url(array('action'=>'delete-role','module'=>'user', 'id'=>$item->id));?>">
+				Delete
+			</a>
+		</td>
+	</tr>
+	<?php } ?>
+</table>

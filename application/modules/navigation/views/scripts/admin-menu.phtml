@@ -1,0 +1,88 @@
+<?php
+/** @var $container Zend_Navigation */
+$container = $this->container;
+//var_dump($container->getPages());
+
+
+$iterator = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
+
+$minDepth = 1;
+$maxDepth = null;
+$ulClass = 'navigation';
+
+// find deepest active
+if ($found = $this->navigation()->findActive($container, $minDepth, $maxDepth)) {
+    $foundPage = $found['page'];
+    $foundDepth = $found['depth'];
+} else {
+    $foundPage = null;
+}
+
+// create iterator
+$iterator = new RecursiveIteratorIterator($container,
+                    RecursiveIteratorIterator::SELF_FIRST);
+if (is_int($maxDepth)) {
+    $iterator->setMaxDepth($maxDepth);
+}
+
+// iterate container
+$prevDepth = -1;
+$html = '';
+$indent = ' ';
+
+/** @var $page Zend_Navigation_Page_Mvc */
+foreach ($iterator as $page) {
+    $depth = $iterator->getDepth();
+    $isActive = $page->isActive(true);
+    if ($depth < $minDepth || !$this->navigation()->accept($page)) {
+        // page is below minDepth or not accepted by acl/visibilty
+        continue;
+    }
+
+    // make sure indentation is correct
+    $depth -= $minDepth;
+    $myIndent = $indent . str_repeat('        ', $depth);
+
+    if ($depth > $prevDepth) {
+        // start new ul tag
+        if ($ulClass && $depth ==  0) {
+            $html .= $myIndent . '<ul class="navigation">' . PHP_EOL;
+        } else {
+            $html .= $myIndent . '<ul>' . PHP_EOL;
+        }
+
+    } else if ($prevDepth > $depth) {
+        // close li/ul tags until we're at current depth
+        for ($i = $prevDepth; $i > $depth; $i--) {
+            $ind = $indent . str_repeat('        ', $i);
+            $html .= $ind . '    </li>' . PHP_EOL;
+            $html .= $ind . '</ul>' . PHP_EOL;
+        }
+        // close previous li tag
+        $html .= $myIndent . '    </li>' . PHP_EOL;
+    } else {
+        // close previous li tag
+        $html .= $myIndent . '    </li>' . PHP_EOL;
+    }
+
+    // render li tag and page
+    $liClass = $isActive ? (' class="active ' . ((null !== $foundPage && $depth == $foundDepth-1) ? 'child' : 'parent').'"') : '';
+
+    $html .= $myIndent . '    <li' . $liClass . '>' . PHP_EOL
+           . $myIndent . '        ' . $this->navigation()->htmlify($page) . PHP_EOL;
+
+    // store as previous depth for next iteration
+    $prevDepth = $depth;
+}
+
+if ($html) {
+    // done iterating container; close open ul/li tags
+    for ($i = $prevDepth+1; $i > 0; $i--) {
+        $myIndent = $indent . str_repeat('        ', $i-1);
+        $html .= $myIndent . '    </li>' . PHP_EOL
+               . $myIndent . '</ul>' . PHP_EOL;
+    }
+    $html = rtrim($html, PHP_EOL);
+}
+
+echo $html;

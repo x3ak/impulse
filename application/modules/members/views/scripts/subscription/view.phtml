@@ -1,0 +1,48 @@
+<?php
+/** @var $subscription Members_Model_Mapper_Subscription */
+$subscription = $this->mapper;
+?>
+<h2><?php echo $this->translate("subscription_info");?></h2>
+<table class="admin-table-info">
+    <tr>
+        <th><?php echo $this->translate('title');?></th>
+        <td><?php echo $subscription->Type->title;?></td>
+    </tr>
+    <tr>
+        <th><?php echo $this->translate('duration');?></th>
+        <td><?php echo $subscription->Type->duration;?> <?php echo $subscription->Type->units;?></td>
+    </tr>
+    <tr>
+        <th><?php echo $this->translate('price_on_signup');?></th>
+        <td><?php echo $subscription->price_on_signup;?></td>
+    </tr>
+    <tr>
+        <th><?php echo $this->translate('start_date');?></th>
+        <td><?php echo $subscription->start_date;?></td>
+    </tr>
+    <tr>
+        <th><?php echo $this->translate('expire_date');?></th>
+        <td><?php echo $subscription->expire_date;?></td>
+    </tr>
+    <tr>
+        <th><?php echo $this->translate('status');?></th>
+        <td><?php echo $subscription->status;?></td>
+    </tr>
+    <tr>
+        <th><?php echo $this->translate('enter_time');?></th>
+        <td><?php echo $subscription->Type->enter_time;?></td>
+    </tr>
+    <tr>
+        <th><?php echo $this->translate('exit_time');?></th>
+        <td><?php echo $subscription->Type->exit_time;?></td>
+    </tr>
+    <tr>
+        <th><?php echo $this->translate('member');?></th>
+        <td><?php echo $subscription->Member->getFullNameAndNumber();?></td>
+    </tr>
+</table>
+
+<div>
+<?php echo $this->link('cancel', $this->url(array('action'=>'cancel')), array('class'=>'button red-button flRight'));?>&nbsp;
+    <div style="clear: both;"></div>
+</div>

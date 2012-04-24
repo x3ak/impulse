@@ -1,0 +1,11 @@
+
+<?php if(!$this->new_member):?>
+<h1>Edit action</h1>
+<div class="member-actions">
+    <?php echo $this->link('view_member', $this->url(array('action'=>'view')), array('class'=>'button grey-button'));?>
+</div>
+<?php else:?>
+<h1>Create member</h1>
+<?php endif;?>
+<?php
+echo $this->form;

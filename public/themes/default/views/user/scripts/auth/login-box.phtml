@@ -1,0 +1,46 @@
+<h2>Вход в магазин</h2>
+<?php $this->loginForm->setAttrib('class','sendForm cc'); ?>
+<?php $this->loginForm
+           ->getElement('login')
+           ->removeDecorator('label')
+           ->removeDecorator('DtDdWrapper')
+           ->setAttrib('onclick',"this.value = ''")
+           ->removeDecorator('HtmlTag')
+           ->setAttrib('class', 'inputField2')
+           ->setValue('логин')
+           ->addDecorator(array('wrap' => 'HtmlTag'),array('tag' => 'p', 'class' => 'searchField2')); ?>
+
+<?php $this->loginForm
+           ->getElement('password')
+           ->removeDecorator('label')
+           ->setAttrib('onclick',"this.value = ''")
+           ->removeDecorator('DtDdWrapper')
+           ->removeDecorator('HtmlTag')
+           ->setAttrib('class', 'inputField2')
+           ->setValue('пароль')
+           ->addDecorator(array('wrap' => 'HtmlTag'),array('tag' => 'p', 'class' => 'searchField2')); ?>
+
+<?php $this->loginForm
+           ->getElement('remember')
+           ->setLabel('запомнить меня')
+           ->setDecorators(array(
+               'ViewHelper',
+               new Zend_Form_Decorator_Label(array('placement'=>'APPEND')),
+               array(array('wrap' => 'HtmlTag'),array('tag' => 'p', 'class' => 'cc'))
+           ));
+        ?>
+
+<?php $this->loginForm
+           ->getElement('submit')
+           ->removeDecorator('label')
+           ->removeDecorator('DtDdWrapper')
+           ->removeDecorator('HtmlTag')
+           ->setAttrib('class','submitBtn')
+           ->setLabel('Войти »')
+           ->addDecorator(array('wrap1' => 'HtmlTag'),array('tag' => 'span', 'class' => ''))
+           ->addDecorator(array('wrap2' => 'HtmlTag'),array('tag' => 'p', 'class' => 'btnField2'));
+        ?>
+
+<?php echo $this->loginForm; ?>
+<a href="<?php echo $this->url(array('module'=>'user','controller'=>'auth','action' => 'forgot'), 'default', true); ?>">Напомнить пароль</a>
+<a href="<?php echo $this->url(array('module'=>'user','controller'=>'registration'), 'default', true); ?>">Зарегистрироваться</a>

@@ -1,0 +1,14 @@
+html, body
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size:11px;
+	color: #3b3b3b;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    /*background: #eb1c24;*/
+}
+
+img {
+    border: 0;
+}

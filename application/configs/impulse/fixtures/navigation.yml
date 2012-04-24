@@ -1,0 +1,117 @@
+Navigation_Model_Mapper_Item:
+  # (!) THAT NODE MUST ALWAYS BE FIRST WITH 'menu' TYPE AND IT MUST BE THE ONLY ONE ROOT ELEMENT
+  NavigationRoot:
+    type: menu
+    # title is no matter. you can name it as you like
+    title: "App navigation"
+    # MUST BE READ ONLY
+    read_only: true
+    children:
+      Frontend:
+        type: menu
+        title: "Site navigation"
+        read_only: true
+        children:
+          Frontend_Top:
+            type: menu
+            title: "Top navigation"
+            read_only: true
+          Frontend_Left:
+            type: menu
+            title: "Side navigation"
+            read_only: true
+      Backend:
+        type: menu
+        title: "Admin navigation"
+        read_only: true
+        children:
+          Members:
+            type: programmatic
+            title: "Members"
+            sysmap_identifier: 3-2c7dd48376b8a04e8161c593dd7d027d
+            route: "default"
+            children:
+              MembersList:
+                type: programmatic
+                title: "List"
+                sysmap_identifier: 3-2cb61741a956b908897c5147bc32b8eb
+                route: "default"
+              MembersEdit:
+                type: programmatic
+                title: "Edit/Add"
+                sysmap_identifier: 3-7dc6ea16f0d4289702c189bef812a7eb
+                route: "default"
+              MembersView:
+                type: programmatic
+                title: "View"
+                sysmap_identifier: 3-f3b84cf29ae65668f73fe36c3c75ccd5
+                route: "default"
+          ProductsList:
+            type: programmatic
+            title: "Products List"
+            sysmap_identifier: 3-b8f0ce01451e06f649980b2f4cc8b730
+            route: "default"
+          ProductsDash:
+            type: programmatic
+            title: "Products Dashboard"
+            sysmap_identifier: 3-4f4c4a8164f6b44c9f8b35c26eaeb7ff
+            route: "default"
+          SubscriptionTypes:
+            type: programmatic
+            title: "Subscription Types"
+            sysmap_identifier: 3-78279d996cb2056ed9d9733cac01b0f3
+            route: "default"
+          Users:
+            type: programmatic
+            title: "Users"
+            sysmap_identifier: 3-d5ce379013095fd018384793812ae266
+            route: "admin"
+#          Reports:
+#            type: programmatic
+#            title: "Reports"
+#            sysmap_identifier: 3-5699126d7ee180bc1be250012d0bc3ed
+#            route: "default"
+          LogOut:
+            type: programmatic
+            title: "Log out"
+            sysmap_identifier: 3-1cc22a2ae3468d33cf6a09274d491b4a
+            route: "admin"
+
+#
+#      Developer:
+#        type: menu
+#        title: "Developer navigation"
+#        read_only: true
+#        children:
+#          Navigation:
+#            type: programmatic
+#            title: "Navigation"
+#            sysmap_identifier: 3-bdc947d7cfae70f3e3c9182fd861b2c5
+#            route: "admin"
+#            children:
+#              NavigationAdd:
+#                type: programmatic
+#                title: "Create Item"
+#                sysmap_identifier: 3-3fbfc3832a2bb875d54b42bffefdf1c8
+#                route: "admin"
+#          SystemMap:
+#            type: programmatic
+#            title: "System Map"
+#            sysmap_identifier: 3-01fffb3ecd840e0de77fa90b11740b08
+#            route: "admin"
+#            children:
+#              SysmapExtendAdd:
+#                type: programmatic
+#                title: "Create Extend"
+#                sysmap_identifier: 3-4c7d5c8b3ab7ea48e9e73d7ce80a210f
+#                route: "admin"
+#              SysmapPatternExtendAdd:
+#                type: programmatic
+#                title: "Create Pattern Extend"
+#                sysmap_identifier: 3-4a404a1f6b1da6edab1b0b0751ff383c
+#                route: "admin"
+#          Templater:
+#            type: programmatic
+#            title: "Templater"
+#            sysmap_identifier: 3-46aeab2a0dff4f86431a32b5c8870f88
+#            route: "admin"

@@ -1,0 +1,86 @@
+span.formButton {
+    background: url("/images/ui/buttons.png") no-repeat scroll right top transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 23px;
+    margin-left: 10px ;
+}
+
+span.formButton span {
+    background: url("/images/ui/buttons.png") no-repeat scroll left top transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 23px;
+    margin: 0 10px 0 -10px;
+}
+
+span.formButton input {
+    color: white;
+    font-weight: 800;
+    font-size: 12px;
+    font-family: Tahoma;
+    cursor: pointer;
+    border: 0 none;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+    padding: 2px 8px 0 16px;
+    background: none repeat scroll 0 0 transparent;
+    display: inline-block;
+}
+
+span.formButton.disabled input {
+    color: #e8e7e7;
+}
+
+span.formButton:hover {
+    background-position: right -23px;
+}
+
+span.formButton:hover span {
+    background-position: left -23px;
+}
+
+span.formButton.disabled {
+    background-position: right -46px;
+}
+
+span.formButton.disabled span {
+    background-position: left -46px;
+}
+
+/** FORM TEXT **/
+span.formText {
+    background: url("/images/ui/inputText.png") no-repeat scroll right top transparent;
+    display: inline-block;
+    height: 23px;
+    margin-left: 5px ;
+}
+
+span.formText span {
+    background: url("/images/ui/inputText.png") no-repeat scroll left top transparent;
+    display: inline-block;
+    height: 23px;
+    margin: 0 5px 0 -5px;
+    padding: 4px 6px 0 6px;
+}
+
+span.formText input {
+    color: black;
+    font-family: Tahoma;
+    border: 0 none;
+    margin: 0;
+    outline: 0 none;
+    padding: 0;
+    background: none repeat scroll 0 0 transparent;
+    display: inline-block;
+}
+
+
+.floatLeft {
+    float: left;
+}
+
+.floatRight {
+    float: right;
+}

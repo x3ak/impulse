@@ -1,0 +1,28 @@
+<?php echo $this->doctype() . PHP_EOL; ?>
+<html>
+<head>
+    <?php
+        $this->headMeta()->appendHttpEquiv('Content-Language', 'nl-NL');
+        $this->headLink()->appendStylesheet('/themes/default/css/main.css');
+
+
+
+        echo $this->headTitle('Login', Zend_View_Helper_Placeholder_Container_Abstract::PREPEND)->setSeparator(' : ').PHP_EOL;
+        echo $this->headMeta().PHP_EOL;
+        echo $this->headLink().PHP_EOL;
+        echo $this->headStyle().PHP_EOL;
+
+        if($this->jQuery()->isEnabled()) {
+            echo $this->jQuery().PHP_EOL;
+        }
+
+
+        echo $this->headScript().PHP_EOL;
+    ?>
+
+</head>
+<body>
+<div class="flash-messages"><?php echo $this->layout()->messages; ?></div>
+<?php echo $this->layout()->content; ?>
+</body>
+</html>

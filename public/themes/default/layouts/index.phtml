@@ -1,0 +1,42 @@
+<?php echo $this->doctype() . PHP_EOL; ?>
+<html>
+<head>
+    <?php
+        $this->headMeta()->appendHttpEquiv('Content-Language', 'en-US');
+        $this->headLink()->appendStylesheet('/themes/default/css/main.css?v2');
+        $this->headScript()->appendFile('http://code.jquery.com/jquery.js');
+
+
+
+        echo $this->headTitle('Slys', Zend_View_Helper_Placeholder_Container_Abstract::PREPEND)->setSeparator(' : ').PHP_EOL;
+        echo $this->headTitle().PHP_EOL;
+        echo $this->headMeta().PHP_EOL;
+        echo $this->headLink().PHP_EOL;
+        echo $this->headStyle().PHP_EOL;
+
+
+
+        echo $this->headScript().PHP_EOL;
+    ?>
+</head>
+<body>
+<a href="/members/admin" class="button">Please click here if no redirect happens</a>
+<table cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+        <td colspan="2"><?php echo $this->layout()->header; ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->layout()->left; ?></td>
+        <td>
+            <?php echo $this->layout()->above_content; ?>
+            <?php echo $this->layout()->content; ?>
+            <?php echo $this->layout()->below_content; ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><?php echo $this->layout()->footer; ?></td>
+    </tr>
+</table>
+<script type="text/javascript">window.location.href= '/members/admin';</script>
+</body>
+</html>

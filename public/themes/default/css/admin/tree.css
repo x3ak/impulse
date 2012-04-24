@@ -1,0 +1,18 @@
+ul.tree {
+    margin-left:10px;
+    padding-left:15px;
+}
+
+ul.tree li {
+    /*list-style: none;*/
+}
+
+ul.tree.root-level {
+    height: 200px;
+    width: 50%;
+    overflow: auto;
+    border: 1px solid #000 !important;
+    background: #fff;
+    list-style: none;
+    padding-left:5px;
+}

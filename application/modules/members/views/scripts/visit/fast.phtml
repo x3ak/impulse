@@ -1,0 +1,30 @@
+<div style="text-align: center;">
+<?php
+$hasVisits = !empty($this->lastVisit);
+$today = ($hasVisits && $this->lastVisit->isToday());
+$inClub = ($hasVisits && empty($this->lastVisit->exit_time));
+$hasSubscription = !empty($this->subscription);
+
+if(empty($this->member)) {
+    echo 'Member doesnt exist!';
+} else {
+    if(false === $hasSubscription) {
+        ?>
+            Member doesnt have active subscription!
+            <a href="<?=$this->url(array('module'=>'members','action'=>'view','id'=>$this->member->id),'admin',true);?>" class="button">View member</a>
+            <?
+    } else {
+
+        if($today && $inClub) {
+            ?>
+                <a href="<?=$this->url(array('module'=>'members','controller'=>'visit','action'=>'finish','member'=>$this->member->id),'default',true);?>" class="button">Finish visit</a>
+                <?
+        } else {
+            ?>
+            <a href="<?=$this->url(array('module'=>'members','controller'=>'visit','action'=>'new','member'=>$this->member->id),'default',true);?>" class="button">Start visit</a>
+            <?
+        }
+    }
+}
+?>
+</div>

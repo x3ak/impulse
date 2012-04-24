@@ -1,0 +1,41 @@
+<h1><?php echo $this->translate('Products');?></h1>
+<style type="text/css">
+
+    .buy-product-button {
+        width: 120px;
+        height: 120px;
+        float: left;
+        margin: 0 10px 10px 0;
+        padding: 4px;
+        display: block;
+        border: 1px solid silver;
+        text-align: center;
+        position: relative;
+    }
+
+    .buy-product-button a {
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+    }
+
+    .buy-product-button h4 {
+
+    }
+    .buy-product-button p {
+        font-size: 30px;
+    }
+</style>
+
+    <?php
+    /** @var $product Products_Model_Mapper_Product */
+    foreach($this->list as $i => $product):
+
+        ?>
+    <div class="buy-product-button">
+        <h3><?=$product->title?></h3>
+        <p><?=$product->price?></p>
+        <a href="<?php echo $this->url(array('module'=>'products','action'=>'buy','id'=>$product->id),'admin',true)?>" class="button">BUY</a>
+        <div style="clear: both;"></div>
+    </div>
+    <?php endforeach;?>

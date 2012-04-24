@@ -1,0 +1,62 @@
+<?php
+//echo $this->arrayTreeToTable($this->sysmapTree);
+
+if (empty($this->sysmapTree) === false):
+?>
+<table class="admin-table-list">
+    <tr>
+	    <th><?php echo $this->translate('title'); ?></th>
+        <th><?php echo $this->translate('action'); ?></th>
+    </tr>
+
+    <?php
+    foreach($this->sysmapTree as $item):
+        $editAction = 'edit-menu-item';
+
+        if ($item['level'] == 0)
+            $editAction = 'edit-menu';
+    ?>
+        <tr>
+            <td>
+                <?php
+                $title  = '';
+                $title .= str_repeat('&nbsp;&nbsp;', $item['level']);
+
+                if($this->arrayTreeItem['level'] > 0)
+                    $title .= '&nbsp;&nbsp;';
+
+                echo $title . $item['title'];
+                ?>
+            </td>
+            <td>
+                <?php if ($item['level'] == 4): ?>
+                    <?php
+                    if ($item['is_pattern'])
+                        echo $this->link(
+                            'edit',
+                            $this->url(array('action' => 'edit-extend-pattern', 'module' => 'sysmap', 'id' => $item['id'])),
+                            array('class' => 'edit-item')
+                        );
+                    else
+                        echo $this->link(
+                            'edit',
+                            $this->url(array('action' => 'edit-extend', 'module' => 'sysmap', 'id' => $item['id'])),
+                            array('class' => 'edit-item')
+                        );
+
+                    echo '&nbsp;/&nbsp;';
+
+                    echo $this->link(
+                        'delete',
+                        $this->url(array('action' => 'delete-extend', 'module' => 'sysmap', 'id' => $item['id'])),
+                        array('class' => 'delete-item'),
+                        'are_you_sure'
+                    );
+                    ?>
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+
+</table>
+<?php endif; ?>

@@ -1,0 +1,22 @@
+
+  <h1>An error occurred</h1>
+  <h2><?php echo $this->message ?></h2>
+
+  <?php if (isset($this->exceptions)): ?>
+<?php foreach($this->exceptions as $exception) {?>
+  <h3>Exception information:</h3>
+  <p>
+      <b>Message:</b> <?php echo $exception->getMessage() ?>
+  </p>
+
+  <h3>Stack trace:</h3>
+  <pre><?php echo $exception->getTraceAsString() ?>
+  </pre>
+  <?php }?>
+   <h3>Request Parameters:</h3>
+  
+   <?php 
+   //Zend_Debug::dump($this->request->getParams());
+   ?>
+
+  <?php endif ?>

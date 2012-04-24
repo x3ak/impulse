@@ -1,0 +1,3 @@
+<h1><?php echo $this->translate('Members');?></h1>
+<?php echo $this->link('members_list', $this->url(array('action'=>'list')), array('class'=>'button list-icon'));?>&nbsp;
+<?php echo $this->link('create_new_member', $this->url(array('module'=>'members','action'=>'edit'),'admin',true), array('class'=>'button plus-icon'));?>

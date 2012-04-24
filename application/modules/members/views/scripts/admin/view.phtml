@@ -1,0 +1,157 @@
+<?php
+$role = Zend_Auth::getInstance()->getIdentity()->Role->name;
+
+$acl = Zend_Controller_Front::getInstance()->getPlugin('User_Plugin_Acl')->getAcl();
+
+/** @var $member Members_Model_Mapper_Member */
+$member = $this->member;
+
+
+$lastSubscription = $member->getLastSubscription();
+$activeSubscription = $member->getActiveSubscription();
+
+
+?>
+
+<h1><?php echo $this->translate('member_information');?></h1>
+<div class="member-actions" style="font-size: 20px;">
+    <?php
+    if(file_exists(APPLICATION_PATH.'/../public/photos/'.$this->member->id.'.jpg')) {
+        $url = '/photos/'.$this->member->id.'.jpg';
+        echo "<img src='$url' alt='member photo' width='130' />";
+    }
+    ?>
+    <?php echo $this->member->getFullName();?> (<?php echo $this->member->number;?>)
+</div>
+
+<div class="member-info">
+    <div class="member-info-box">
+        <h2 style="margin-bottom: 0">General info</h2>
+        <table class="admin-table-info">
+            <tr>
+                <th><?php echo $this->translate('number');?></th>
+                <td><?php echo $member->number;?></td>
+            </tr>
+            <tr>
+                <th><?php echo $this->translate('member_name');?></th>
+                <td><?php echo $member->getFullName();?></td>
+            </tr>
+            <tr>
+                <th><?php echo $this->translate('this_week_visits');?></th>
+                <td><?php echo $member->getCurrentWeekVisits();?></td>
+            </tr>
+            <tr>
+                <th><?php echo $this->translate('lifetime_visits');?></th>
+                <td><?php echo $member->getLifetimeVisits();?></td>
+            </tr>
+            <tr>
+                <th><?php echo $this->translate('birth_date');?></th>
+                <td><?php echo date('d.m.Y', strtotime($member->birth_date));?></td>
+            </tr>
+            <tr>
+                <th><?php echo $this->translate('email');?></th>
+                <td><a href="mailto:<?php echo $member->email;?>"><?php echo $member->email;?></a></td>
+            </tr>
+            <tr>
+                <th><?php echo $this->translate('phone');?></th>
+                <td><a href="tel:<?php echo $member->phone;?>"><?php echo $member->phone;?></a></td>
+            </tr>
+        </table>
+
+        <?php
+        if($acl->isAllowed($role, '3-7dc6ea16f0d4289702c189bef812a7eb')) {
+            echo $this->link('edit_member', $this->url(array('action'=>'edit')), array('class'=>'button'));
+        }
+        ?>
+
+    </div>
+
+
+
+    <div class="member-info-box box-xl last-box">
+        <table class="admin-table-list">
+            <tr class="title">
+                <th><?php echo $this->translate('visit_day');?></th>
+                <th><?php echo $this->translate('enter_time');?></th>
+                <th><?php echo $this->translate('exit_time');?></th>
+            </tr>
+            <?php
+            /** @var $visit Members_Model_Mapper_Visit */
+            foreach(Members_Model_DbTable_Visit::getInstance()->getRecentVisits($member) as $k => $visit):
+                    ?>
+                    <tr>
+                        <td><?php echo $this->link(date('d.m.Y', strtotime($visit->day)), $this->url(array('module'=>'members','controller'=>'visit','action'=>'view','id'=>$visit->id), 'default', true), array('class'=>'modal-dialog-link dialog-size-s'));?></td>
+                        <td><?php echo $this->link($visit->enter_time, $this->url(array('module'=>'members','controller'=>'visit','action'=>'view','id'=>$visit->id), 'default', true), array('class'=>'modal-dialog-link dialog-size-s'));?></td>
+                        <td><?php echo $this->link(empty($visit->exit_time) ? $this->translate('in_club') : $visit->exit_time, $this->url(array('module'=>'members','controller'=>'visit','action'=>'view','id'=>$visit->id), 'default', true), array('class'=>'modal-dialog-link dialog-size-s'));?></td>
+                    </tr>
+                    <?php
+                endforeach;?>
+        </table>
+        <?php
+        if(false === empty($lastSubscription)) {
+            $lastVisit = $member->getLastVisit();
+
+            if(empty($lastVisit)  || !empty($lastVisit->exit_time)) {
+                echo $this->link('add_visit', $this->url(array('module'=>'members','controller'=>'visit','action'=>'new', 'member'=>$member->id), 'default', true), array('class'=>'button plus-icon modal-dialog-link dialog-size-s', 'id'=>'add-subscription'));
+            }
+            else {
+                echo $this->link('finish_visit', $this->url(array('module'=>'members','controller'=>'visit','action'=>'finish', 'member'=>$member->id), 'default', true), array('class'=>'button red-button modal-dialog-link dialog-size-s', 'id'=>'add-subscription'));
+            }
+        }
+        else
+            echo "<input type='button' value='".$this->translate('add_visit')."' class='button light-grey-button'>";
+        ?>
+
+    </div>
+
+    <div style="clear: both;"></div>
+
+    <div class="member-info-box box-xl">
+        <table class="admin-table-list">
+            <tr class="title">
+                <th><?php echo $this->translate('subscription');?></th>
+                <th><?php echo $this->translate('start_date');?></th>
+                <th><?php echo $this->translate('expire_date');?></th>
+                <th><?php echo $this->translate('status');?></th>
+            </tr>
+            <?php
+            /** @var $subscription Members_Model_Mapper_Subscription */
+            foreach($member->getSubscriptions() as $subscription):?>
+                <tr class="row <?php
+                        if($subscription->isExpired()) echo "grey-row";
+                        elseif($subscription->isActive()) echo "active-row";
+                        elseif($subscription->isPending()) echo "grey-row";
+                    ?>">
+                    <td><?php echo $this->link($subscription->Type->title,
+                                                $this->url(array('module'=>'members','controller'=>'subscription','action'=>'view','id'=>$subscription->id),'default',true),
+                                                array('class'=>'modal-dialog-link'));?></td>
+
+                    <td><?php echo $this->link(date('d.m.Y', strtotime($subscription->start_date)),
+                                                $this->url(array('module'=>'members','controller'=>'subscription','action'=>'view','id'=>$subscription->id),'default',true),
+                                                array('class'=>'modal-dialog-link'));?></td>
+
+                    <td><?php echo $this->link(date('d.m.Y', strtotime($subscription->expire_date)),
+                                                $this->url(array('module'=>'members','controller'=>'subscription','action'=>'view','id'=>$subscription->id),'default',true),
+                                                array('class'=>'modal-dialog-link'));?></td>
+                    <td><?php echo $this->link($subscription->status,
+                                                $this->url(array('module'=>'members','controller'=>'subscription','action'=>'view','id'=>$subscription->id),'default',true),
+                                                array('class'=>'modal-dialog-link'));?></td>
+                </tr>
+            <?php endforeach;?>
+        </table>
+        <?php
+    if(
+        empty($activeSubscription) && empty($lastSubscription)
+        || $lastSubscription->expire_date != '0000-00-00'
+    )
+        echo $this->link('add_subscription', $this->url(array('action'=>'add-subscription')), array('class'=>'button plus-icon modal-dialog-link dialog-size-s', 'id'=>'add-subscription'));
+
+        ?>
+    </div>
+
+
+
+
+
+    <div style="clear: both;"></div>
+</div>

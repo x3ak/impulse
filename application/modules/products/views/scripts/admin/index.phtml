@@ -1,0 +1,17 @@
+<h1><?php echo $this->translate('Products');?></h1>
+<?php echo $this->link('create_new_product', $this->url(array('module'=>'products','action'=>'edit'),'admin',true), array('class'=>'button plus-icon'));?>
+
+<br />
+<br />
+<table class="admin-table-list">
+    <?php
+    /** @var $product Products_Model_Mapper_Product */
+    foreach($this->list as $product):
+
+        ?>
+            <td width="20" onclick="window.location.href = '<?php echo $this->url(array('action'=>'edit','id'=>$product->id));?>' "></td>
+            <td width="60" onclick="window.location.href = '<?php echo $this->url(array('action'=>'edit','id'=>$product->id));?>' "><?php echo $product->price?></td>
+            <td onclick="window.location.href = '<?php echo $this->url(array('action'=>'edit','id'=>$product->id));?>' "><?php echo $product->title?></td>
+        </tr>
+        <?php endforeach;?>
+</table>

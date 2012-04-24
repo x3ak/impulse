@@ -1,0 +1,30 @@
+Navigation_Model_Mapper_Item:
+  connection: doctrine
+  tableName: navigation_items
+  actAs: [NestedSet]
+  columns:
+    id:
+      type: integer(11)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    type:
+      type: enum
+      values:
+        - menu
+        - external
+        - programmatic
+    title:
+      type: string(255)
+    external_link:
+      type: string(255)
+    sysmap_identifier:
+      type: string(35)
+    route:
+      type: string(30)
+    read_only:
+      type: boolean
+      default: false
+  options:
+    collate: utf8_unicode_ci
+    charset: utf8

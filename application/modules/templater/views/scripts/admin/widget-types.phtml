@@ -1,0 +1,26 @@
+<table class="admin-table-list">
+	<tr>
+		<th width="20">ID</th>
+		<th>Action</th>
+		<th width="10">Published</th>
+		<th width="10">Actions</th>
+	</tr>
+	<?php foreach ($this->pager->execute() as $item) {?>
+	<tr>
+		<td align="center"><?php echo $item->id; ?></td>
+		<td>
+                    <?php echo $this->link($item->name, $this->url(array('action' => 'edit-widget-type', 'id' => $item->id))); ?>
+		</td>
+                <td align="center"><a href="<?php echo $this->url(array('action' => 'publish-theme', 'module' => 'templater', 'id' => $item->id), 'admin', true); ?>" class="icon16 <?php
+                    if ($item->published)
+                        echo 'icon-published'; else
+                        echo 'icon-not-published' ?>"></a></td>
+		<td align="center" nowrap="nowrap">
+                    <?php echo $this->link('Edit', $this->url(array('action' => 'edit-widget-type', 'id' => $item->id)),
+                                array('class' => 'edit-item')); ?>
+                    <?php echo $this->link('Delete', $this->url(array('action' => 'delete-widget-type', 'id' => $item->id)),
+                                array('class' => 'delete-item'), 'Delete this widget type?'); ?>
+		</td>
+	</tr>
+	<?php } ?>
+</table>

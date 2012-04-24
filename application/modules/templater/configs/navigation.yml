@@ -1,0 +1,44 @@
+label: Appearance
+module: templater
+class: MenuBarItemIcon icon-folder-palette
+controller: admin
+pages:
+  Themes:
+    label: Themes
+    class: MenuBarItemIcon icon-layers
+    module: templater
+    controller: admin
+    action: themes
+    pages:
+      NewTheme:
+        class: MenuBarItemIcon icon-add
+        label: New theme
+        module: templater
+        controller: admin
+        action: edit-theme
+      Layouts:
+        class: MenuBarItemIcon icon-xhtml
+        label: Layouts
+        module: templater
+        controller: admin
+        action: layouts
+        pages:
+          NewLayout:
+            class: MenuBarItemIcon icon-add
+            label: New layout
+            module: templater
+            controller: admin
+            action: edit-layout
+          Widgets:
+            class: MenuBarItemIcon icon-layout_content
+            label: Widgets
+            module: templater
+            controller: admin
+            action: widgets
+            pages:
+              NewWidget:
+                class: MenuBarItemIcon icon-add
+                label: New widget
+                module: templater
+                controller: admin
+                action: edit-widget

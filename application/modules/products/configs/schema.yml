@@ -1,0 +1,65 @@
+actAs: [Timestampable]
+
+Products_Model_Mapper_Product:
+  connection: doctrine
+  tableName: products_product
+  columns:
+    id:
+      type: integer(11)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    title:
+      type: string(255)
+      unique: true
+    price:
+      type: decimal(10)
+      scale: 2
+      notnull: true
+
+Products_Model_Mapper_Sale:
+  connection: doctrine
+  tableName: products_sales
+  columns:
+    id:
+      type: integer(11)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    product_id:
+      type: integer(11)
+      unsigned: true
+      notnull: true
+  relations:
+    Product:
+      class: Products_Model_Mapper_Product
+      local: product_id
+      foreign: id
+      foreignAlias: Sales
+
+Products_Model_Mapper_Stock:
+  connection: doctrine
+  tableName: products_stock
+  columns:
+    id:
+      type: integer(11)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    product_id:
+      type: integer(11)
+      unsigned: true
+      notnull: true
+    amount:
+      type: integer(11)
+      unsigned: true
+      notnull: true
+    date:
+      type: date
+      notnull: true
+  relations:
+    Product:
+      class: Products_Model_Mapper_Product
+      local: product_id
+      foreign: id
+      foreignAlias: Stock

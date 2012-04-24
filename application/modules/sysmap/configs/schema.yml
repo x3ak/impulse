@@ -1,0 +1,32 @@
+Sysmap_Model_Mapper_Sysmap:
+  connection: doctrine
+  tableName: sysmap_items
+  actAs: [NestedSet]
+  columns:
+    id:
+      type: integer(11)
+      unsigned: true
+      primary: true
+      autoincrement: true
+    mca:
+      type: string(255)
+      unique: true
+    hash:
+      type: string(35)
+    form_name:
+      type: string(255)
+    title:
+      type: string(100)
+    description:
+      type: string(1000)
+    index_date:
+      type: timestamp
+    path:
+      type: string(1000)
+    params:
+      type: array
+    is_pattern:
+      type: boolean
+  options:
+    collate: utf8_unicode_ci
+    charset: utf8

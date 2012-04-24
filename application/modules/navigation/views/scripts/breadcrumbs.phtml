@@ -1,0 +1,30 @@
+<?php
+$pages = array();
+$i = 0;
+$url = $this->url(array(),null,true);
+$pages[] = '<div class="breadcrumbs-link"><a class="breadcrumbs-home" href="'.$url.'">&nbsp;</a></div>';
+
+foreach($this->pages as $page) {
+	$i++;
+	$class = $page->getClass();
+	if(!empty($class))
+		$baseClass = 'breadcrumbs-root';
+	else
+		$baseClass = '';
+	if($i == 1)
+		$class = 'class="'.$baseClass.' '.$class.'"';
+	else
+		$class = '';
+	
+	$url = $this->url(array(
+        'module'=>$page->getModule(),
+        'controller'=>$page->getController(),
+        'action'=>$page->getAction()),null,true);
+	if(count($this->pages) > $i)
+		$link = '<a '.$class.' href="'.$url.'">'.$page->getLabel().'</a>';
+	else
+		$link = $page->getLabel();
+	$pages[] = '<div class="breadcrumbs-link">'.$link.'</div>';
+}
+echo implode('<div class="breadcrumbs-separator"></div>', $pages);
+?>
