@@ -10,7 +10,15 @@
  */
 class Products_Model_Mapper_Sale extends Products_Model_Mapper_BaseSale
 {
+    public function preInsert($event)
+    {
 
+        $identity = Zend_Auth::getInstance()->getIdentity();
+
+        $invoker = $event->getInvoker();
+
+        $invoker->user_id = $identity->id;
+    }
 
 }
 

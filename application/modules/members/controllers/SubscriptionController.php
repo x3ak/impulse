@@ -36,17 +36,59 @@ class Members_SubscriptionController extends Zend_Controller_Action
         }
 
 
+        $form = new Members_Form_SubscriptionType_Edit();
+
+
+        if($this->getRequest()->isPost()) {
+
+            if($form->isValid($this->getRequest()->getParams())) {
+
+                $mapper->fromArray($form->getValues());
+
+                $mapper->save();
+
+                $this->_helper->getHelper('FlashMessenger')->addMessage('subscription saved');
+                $this->_helper->redirector->goToRoute(array(
+                    'module' => 'members',
+                    'controller' => 'subscription',
+                    'action' => 'list'
+                ), 'default', true);
+            }
+        }
+
+        $form->populate($mapper->toArray());
+
+        $this->view->form = $form;
+
+    }
+
+    public function editSubscriptionAction()
+    {
+        $id = $this->getRequest()->getParam('id');
+        if(!empty($id)) {
+            $mapper = Members_Model_DbTable_Subscription::getInstance()->findOneBy('id', $id);
+        } else {
+            $mapper = new Members_Model_Mapper_Subscription();
+        }
+
+
         $form = new Members_Form_Subscription_Edit();
 
 
         if($this->getRequest()->isPost()) {
 
             if($form->isValid($this->getRequest()->getParams())) {
+
                 $mapper->fromArray($form->getValues());
 
-                if($this->getRequest()->getParam('delete') != null) {
-                    $mapper->save();
-                }
+                $mapper->save();
+
+                $this->_helper->getHelper('FlashMessenger')->addMessage('subscription saved');
+                $this->_helper->redirector->goToRoute(array(
+                    'module' => 'members',
+                    'action' => 'view',
+                    'id' => $mapper->member_id
+                ), 'admin', true);
             }
         }
 

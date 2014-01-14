@@ -10,19 +10,24 @@ $(function(){
 
         var dialogObject = $('#modal-dialog-'+$.openedDialogs.length);
 
-        var ww = $(window).width();
-        var wh = $(window).height();
-        var dw = dialogObject.width();
-        var dh = dialogObject.height();
-
-
-
         if($(this).is('.dialog-size-s')) {
             dialogObject.css({
                 minWidth: 400,
                 minHeight: 100
             });
         }
+
+        if($(this).is('.dialog-size-l')) {
+            dialogObject.css({
+                minWidth: 800,
+                minHeight: 200
+            });
+        }
+
+        var ww = $(window).width();
+        var wh = $(window).height();
+        var dw = dialogObject.width();
+        var dh = dialogObject.height();
 
         dialogObject.css({
             left: (ww - dw) / 2,

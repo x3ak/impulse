@@ -16,7 +16,6 @@ Members_Model_Mapper_Member:
       unique: true
     email:
       type: string(255)
-      unique: true
     sex:
       type: enum
       values:
@@ -31,9 +30,17 @@ Members_Model_Mapper_Member:
       notnull: true
     birth_date:
       type: date
-      notnull: true
     phone:
       type: string(64)
+    user_id:
+      type: integer(11)
+  relations:
+    User:
+      class: User_Model_Mapper_User
+      local: user_id
+      foreign: id
+      foreignAlias: Members
+      onDelete: SET NULL
 
 Members_Model_Mapper_Subscription:
   connection: doctrine
@@ -49,8 +56,8 @@ Members_Model_Mapper_Subscription:
       unsigned: true
       notnull: true
     price_on_signup:
-      type: decimal(10)
-      scale: 2
+      type: integer(4)
+      unsigned: true
       notnull: true
     type_id:
       type: integer(11)
@@ -70,17 +77,27 @@ Members_Model_Mapper_Subscription:
     expire_date:
       type: date
       notnull: true
+    user_id:
+      type: integer(11)
   relations:
     Member:
       class: Members_Model_Mapper_Member
       local: member_id
       foreign: id
       foreignAlias: Subscriptions
+      onDelete: CASCADE
     Type:
       class: Members_Model_Mapper_SubscriptionType
       local: type_id
       foreign: id
       foreignAlias: Subscriptions
+      onDelete: CASCADE
+    User:
+      class: User_Model_Mapper_User
+      local: user_id
+      foreign: id
+      foreignAlias: Subscriptions
+      onDelete: SET NULL
 
 Members_Model_Mapper_Visit:
   connection: doctrine
@@ -108,18 +125,27 @@ Members_Model_Mapper_Visit:
       type: integer(11)
       unsigned: true
       notnull: true
+    user_id:
+      type: integer(11)
   relations:
     Member:
       class: Members_Model_Mapper_Member
       local: member_id
       foreign: id
       foreignAlias: Visits
+      onDelete: CASCADE
     Subscription:
       class: Members_Model_Mapper_Subscription
       local: subscription_id
       foreign: id
       foreignAlias: Visits
-
+      onDelete: CASCADE
+    User:
+      class: User_Model_Mapper_User
+      local: user_id
+      foreign: id
+      foreignAlias: Visits
+      onDelete: SET NULL
 
 Members_Model_Mapper_SubscriptionType:
   connection: doctrine
@@ -154,5 +180,6 @@ Members_Model_Mapper_SubscriptionType:
     visits_per_week:
       type: integer(4)
     price:
-      type: decimal(10)
-      scale: 2
+      type: integer(4)
+      unsigned: true
+      notnull: true

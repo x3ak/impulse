@@ -1,9 +1,3 @@
-<?php
-$role = Zend_Auth::getInstance()->getIdentity()->Role->name;
-
-$acl = Zend_Controller_Front::getInstance()->getPlugin('User_Plugin_Acl')->getAcl();
-?>
-
 <h1><?php echo $this->translate('members_list');?></h1>
 <form action="<?php echo $this->url();?>" method="get" id="list-filter">
 <table class="table-filter">
@@ -14,8 +8,7 @@ $acl = Zend_Controller_Front::getInstance()->getPlugin('User_Plugin_Acl')->getAc
             <input type="submit" class="button" value="filter" />
             <input type="reset" class="button light-grey-button" id="reset-filter" value="reset" />
         <?php
-            if($acl->isAllowed($role, '3-7dc6ea16f0d4289702c189bef812a7eb'))
-            echo $this->link('create_new_member', $this->url(array('module'=>'members','action'=>'edit'),'admin',true), array('class'=>'button plus-icon'));?></td>
+            echo $this->link('create_new_member', $this->url(array('module'=>'members','action'=>'add'),'admin',true), array('class'=>'button plus-icon'));?></td>
     </tr>
 </table>
 </form>
@@ -36,9 +29,8 @@ $acl = Zend_Controller_Front::getInstance()->getPlugin('User_Plugin_Acl')->getAc
                     <li<?php if($this->savedFilter =='todays') echo ' class="active"';?>><?php echo $this->link('Today\'s members', $this->url(array('module'=>'members','action'=>'list', 'saved-filter'=>'todays'), 'admin', true));?></li>
                     <li<?php if($this->savedFilter =='expired') echo ' class="active"';?>><?php echo $this->link('Expired members', $this->url(array('module'=>'members','action'=>'list', 'saved-filter'=>'expired'), 'admin', true));?></li>
                     <li<?php if($this->savedFilter =='expire-in-1-week') echo ' class="active"';?>><?php echo $this->link('Expire in 1 week', $this->url(array('module'=>'members','action'=>'list', 'saved-filter'=>'expire-in-1-week'), 'admin', true));?></li>
-                    <?php if($acl->isAllowed($role, '3-b9b2e5d909123c89b41590a5b3dc426b')):?>
                     <li><?php echo $this->link('Emails list', $this->url(array('module'=>'members','controller'=>'report','action'=>'emails-list'), 'default', true));?></li>
-                    <?php endif;?>
+                    <li><?php echo $this->link('Weekly visits report', $this->url(array('module'=>'members','controller'=>'report','action'=>'week-visits-report'), 'default', true));?></li>
                 </ul>
             </div>
         </td>

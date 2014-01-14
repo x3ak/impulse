@@ -1,13 +1,6 @@
-<?php
-$role = Zend_Auth::getInstance()->getIdentity()->Role->name;
-
-$acl = Zend_Controller_Front::getInstance()->getPlugin('User_Plugin_Acl')->getAcl();
-?>
 <h1><?php echo $this->translate('subscriptions_list');?></h1>
 
-<?php if($acl->isAllowed($role, '3-0787cde283217ab0643728e61078b28f')):?>
 <?php echo $this->link('create_new_type', $this->url(array('module'=>'members','controller'=>'subscription','action'=>'edit'),'default',true), array('class'=>'button plus-icon'));?>
-<?php endif;?>
 <table class="admin-table-list" id="subscriptions-list">
     <?php
     /** @var $subscription Members_Model_Mapper_SubscriptionType */

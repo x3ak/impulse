@@ -11,6 +11,31 @@ class Slys_View_Helper_Link extends Zend_View_Helper_HtmlElement
 {
 	public function link($title, $url, array $additional = null,$confirmMessage = null)
 	{
+        $identity = Zend_Auth::getInstance()->getIdentity();
+
+        if(!empty($identity) && $identity->role != 'ADMIN') {
+            /** @var $defaultRoute Zend_Controller_Router_Route_Module */
+            $defaultRoute = Zend_Controller_Front::getInstance()->getRouter()->getRoute('admin');
+
+            $data = $defaultRoute->match($url);
+
+            if(empty($data)) {
+                $adminRoute = Zend_Controller_Front::getInstance()->getRouter()->getRoute('default');
+                $data = $adminRoute->match($url);
+            }
+
+
+
+            $mca = implode('.', array($data['module'], $data['controller'], $data['action']));
+            $acl = Zend_Registry::get('ACL');
+
+
+            if(!in_array(strtolower($mca), $acl[$identity->role])) {
+                return '';
+            }
+        }
+
+        //TODO add ACL
         $title = $this->view->translate($title);
 		$attribs = array('href' => $url);
 		if($additional !== null)

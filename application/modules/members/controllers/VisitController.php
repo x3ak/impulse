@@ -64,6 +64,10 @@ class Members_VisitController extends Zend_Controller_Action
 
         $form->setMember($member);
 
+
+
+
+
         $mapper = new Members_Model_Mapper_Visit();
         $mapper->fromArray($form->getValues());
         $mapper->save();
@@ -72,6 +76,30 @@ class Members_VisitController extends Zend_Controller_Action
 
         if($subscription->isPending()) {
             $subscription->activate();
+        }
+
+        $allowedVisitsPerWeek = $subscription->Type->visits_per_week;
+
+        if(!empty($allowedVisitsPerWeek) ) {
+            $weekVisits = $member->getCurrentWeekVisits();
+            if($weekVisits > $allowedVisitsPerWeek) {
+
+            }
+        }
+
+
+        $this->_helper->getHelper('FlashMessenger')->addMessage('visit_was_started');
+
+        if(false === $this->getRequest()->isXmlHttpRequest() ) {
+            $this->_helper->redirector->goToRoute(array(
+                'module' => 'members',
+                'action' => 'view',
+                'id' => $memberId,
+            ), 'admin', true);
+
+
+        } else {
+            $this->view->saved = true;
         }
     }
 

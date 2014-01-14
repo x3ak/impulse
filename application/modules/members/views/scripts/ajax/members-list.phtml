@@ -8,7 +8,13 @@ foreach($this->list as $member):
     <td width="100"><?php echo $member->number;?></td>
     <td width="200"><?php echo $member->getFullName();?></td>
     <td><?php if($activeSubscription != false) echo $activeSubscription->Type->title;?></td>
-<!--    <td width="200">--><?php //if($lastVisit != false) echo $lastVisit->day;?><!--</td>-->
+    <td><?php if($activeSubscription != false) echo $activeSubscription->start_date.' -> '.$activeSubscription->expire_date;?></td>
+    <td width="100">
+    <?php
+	if($activeSubscription != false && !empty($lastVisit) && empty($lastVisit->exit_time)):?>
+        <?php echo $this->link('finish_visit', $this->url(array('module'=>'members','controller'=>'visit','action'=>'finish', 'member'=>$member->id), 'default', true), array('class'=>'button red-button'));?>
+    <?php endif;?>
+        </td>
 </tr>
 <?php endforeach;?>
 <script type="text/javascript">

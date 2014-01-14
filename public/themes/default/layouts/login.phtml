@@ -2,8 +2,10 @@
 <html>
 <head>
     <?php
-        $this->headMeta()->appendHttpEquiv('Content-Language', 'nl-NL');
-        $this->headLink()->appendStylesheet('/themes/default/css/main.css');
+    $this->headMeta()->appendHttpEquiv('Content-Language', 'en-US');
+    $this->headLink()->appendStylesheet('/themes/default/css/main.css?v2');
+    $this->headScript()->appendFile('/themes/default/js/jquery.js');
+    $this->headScript()->appendFile('/themes/default/js/ui-buttons.js');
 
 
 
@@ -12,17 +14,21 @@
         echo $this->headLink().PHP_EOL;
         echo $this->headStyle().PHP_EOL;
 
-        if($this->jQuery()->isEnabled()) {
-            echo $this->jQuery().PHP_EOL;
-        }
-
-
         echo $this->headScript().PHP_EOL;
     ?>
 
 </head>
 <body>
-<div class="flash-messages"><?php echo $this->layout()->messages; ?></div>
-<?php echo $this->layout()->content; ?>
+<div style="width: 350px;
+    margin: 20px auto; ">
+    <div style="text-align: center;">
+    <img src="/themes/default/images/logo.jpg" width="200" />
+    </div>
+
+    <?php echo $this->flashMessenger(); ?>
+    <br />
+    <?php echo $this->layout()->content; ?>
+</div>
+
 </body>
 </html>

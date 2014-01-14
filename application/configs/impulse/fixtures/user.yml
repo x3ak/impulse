@@ -1,38 +1,7 @@
 User_Model_Mapper_User:
-  User_1:
-    login: user
-    firstname: Иван
-    lastname: Иванов
-    password: 4297f44b13955235245b2497399d7a93
-    role_id: 2
-    active: true
-  User_2:
+  User:
     login: admin
     firstname: Администратор
     lastname: Администратор
-    password: 4297f44b13955235245b2497399d7a93
-    role_id: 3
-    active: true
-
-User_Model_Mapper_Role:
-  Guest:
-    id: 1
-    name: guest
-    parent_id: null
-    is_default: true
-  User:
-    id: 2
-    name: user
-    parent_id: 1
-  Admin:
-    id: 3
-    name: admin
-    parent_id: 1
-
-User_Model_Mapper_Rule:
-  AllResourcesGuest:
-    Role: Guest
-    resource_id: 0-816563134a61e1b2c7cd7899b126bde4
-  AllResourcesAdmin:
-    Role: Admin
-    resource_id: 0-816563134a61e1b2c7cd7899b126bde4
+    password: 3640798cee56b6a002b9ebd79cf1f9150081bbe1
+    role: ADMIN

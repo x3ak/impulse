@@ -39,7 +39,7 @@ class Members_AdminController extends Zend_Controller_Action
         $filterNumber = $this->getRequest()->getParam('number');
         $filterName = $this->getRequest()->getParam('name');
 
-        $listDQL = Members_Model_DbTable_Member::getInstance()->getList($page, $orderField, $orderDirection);
+        $listDQL = Members_Model_DbTable_Member::getInstance()->getList($page);
 
         if(!empty($filterName)) {
             $listDQL->where("lower(m.firstname) LIKE lower(?) OR lower(m.lastname) LIKE lower(?)", array('%'.$filterName.'%', '%'.$filterName.'%'));
@@ -50,29 +50,33 @@ class Members_AdminController extends Zend_Controller_Action
         }
 
 
+        $listDQL->orderBy('m.number ASC');
+
         switch($savedFilter) {
             case "active":
                 $listDQL->innerJoin('m.Subscriptions s WITH s.status = ?', 'ACTIVE');
                 break;
             case "todays":
+                $listDQL->leftJoin('m.Subscriptions s');
                 $listDQL->innerJoin('m.Visits v WITH v.day = ?', date('Y-m-d'));
+                $listDQL->orderBy('v.enter_time ASC');
                 break;
             case "expired":
                 $listDQL->leftJoin('m.Subscriptions s');
                 $listDQL->where('s.status != "ACTIVE" OR s.status IS NULL ');
                 break;
             case "expire-in-1-week":
-                $listDQL->innerJoin('m.Subscriptions s WITH s.expire_date < ? AND expire_date > ?', array(date('Y-m-d', strtotime('+1 week')), date('Y-m-d')));
+                $listDQL->innerJoin('m.Subscriptions s WITH s.expire_date <= ? AND expire_date >= ?', array(date('Y-m-d', strtotime('+1 week')), date('Y-m-d')));
                 break;
             case "inside":
+                $listDQL->leftJoin('m.Subscriptions s');
                 $listDQL->innerJoin('m.Visits v WITH v.exit_time IS NULL');
                 break;
 
 
             default:
-
+                $listDQL->leftJoin('m.Subscriptions s');
         }
-
 
         $this->view->list = $listDQL->execute();
 
@@ -102,6 +106,10 @@ class Members_AdminController extends Zend_Controller_Action
     /**
      * Edit / Add member
      */
+    public function addAction() {
+        $this->_forward('edit');
+    }
+
     public function editAction()
     {
         $form = new Members_Form_Edit();
@@ -118,10 +126,42 @@ class Members_AdminController extends Zend_Controller_Action
 
         $form->populate($memberMapper->toArray());
 
+
+        $this->view->member = $memberMapper;
+        $this->view->form = $form;
+
         if($this->getRequest()->isPost()) {
             if($form->isValid($this->getRequest()->getPost())) {
-                $memberMapper->fromArray($form->getValues());
+                $data = $form->getValues();
+                $found = Members_Model_DbTable_Member::getInstance()->findOneBy('number', $data['number']);
+
+                if(!empty($found)) {
+                    if(!empty($memberMapper->id) && $memberMapper->id != $found->id) {
+                        $form->getElement('number')->addError('Member with such number already exists');
+
+                        return;
+                    } else if(empty($memberMapper->id) ) {
+                        $form->getElement('number')->addError('Member with such number already exists');
+
+                        return;
+                    }
+                }
+
+                $memberMapper->fromArray($data);
                 $memberMapper->save();
+
+                if(!empty($data['subscription_type'])) {
+
+                    /** @var $typeMapper Members_Model_Mapper_SubscriptionType */
+                    $typeMapper = Members_Model_DbTable_SubscriptionType::getInstance()->findOneBy('id', $data['subscription_type']);
+
+                    $link = new Members_Model_Mapper_Subscription();
+                    $link->Member = $memberMapper;
+                    $link->Type = $typeMapper;
+                    $link->price_on_signup = $typeMapper->price;
+                    $link->save();
+                    $link->activate();
+                }
 
                 if($form->photo->receive()) {
 
@@ -140,8 +180,6 @@ class Members_AdminController extends Zend_Controller_Action
             }
         }
 
-        $this->view->member = $memberMapper;
-        $this->view->form = $form;
     }
 
     public function viewAction()

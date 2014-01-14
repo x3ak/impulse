@@ -9,13 +9,15 @@ Doctrine_Manager::getInstance()->bindComponent('Members_Model_Mapper_BaseSubscri
  * 
  * @property integer $id
  * @property integer $member_id
- * @property decimal $price_on_signup
+ * @property integer $price_on_signup
  * @property integer $type_id
  * @property enum $status
  * @property date $start_date
  * @property date $expire_date
+ * @property integer $user_id
  * @property Members_Model_Mapper_Member $Member
  * @property Members_Model_Mapper_BaseSubscriptionType $Type
+ * @property User_Model_Mapper_User $User
  * @property Doctrine_Collection $Visits
  * 
  * @package    ##PACKAGE##
@@ -41,11 +43,11 @@ class Members_Model_Mapper_BaseSubscription extends Doctrine_Record
              'notnull' => true,
              'length' => '11',
              ));
-        $this->hasColumn('price_on_signup', 'decimal', 10, array(
-             'type' => 'decimal',
-             'scale' => 2,
+        $this->hasColumn('price_on_signup', 'integer', 4, array(
+             'type' => 'integer',
+             'unsigned' => true,
              'notnull' => true,
-             'length' => '10',
+             'length' => '4',
              ));
         $this->hasColumn('type_id', 'integer', 11, array(
              'type' => 'integer',
@@ -72,6 +74,10 @@ class Members_Model_Mapper_BaseSubscription extends Doctrine_Record
              'type' => 'date',
              'notnull' => true,
              ));
+        $this->hasColumn('user_id', 'integer', 11, array(
+             'type' => 'integer',
+             'length' => '11',
+             ));
     }
 
     public function setUp()
@@ -79,11 +85,18 @@ class Members_Model_Mapper_BaseSubscription extends Doctrine_Record
         parent::setUp();
         $this->hasOne('Members_Model_Mapper_Member as Member', array(
              'local' => 'member_id',
-             'foreign' => 'id'));
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
 
         $this->hasOne('Members_Model_Mapper_BaseSubscriptionType as Type', array(
              'local' => 'type_id',
-             'foreign' => 'id'));
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
+
+        $this->hasOne('User_Model_Mapper_User as User', array(
+             'local' => 'user_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
 
         $this->hasMany('Members_Model_Mapper_Visit as Visits', array(
              'local' => 'id',

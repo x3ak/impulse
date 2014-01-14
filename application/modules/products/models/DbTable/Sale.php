@@ -22,5 +22,6 @@ class Products_Model_DbTable_Sale extends Doctrine_Table
     }
 
 
+
 }
 

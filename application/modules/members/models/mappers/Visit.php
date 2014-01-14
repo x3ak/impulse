@@ -19,5 +19,14 @@ class Members_Model_Mapper_Visit extends Members_Model_Mapper_BaseVisit
         return date('Y-m-d') == date('Y-m-d', strtotime($this->day));
     }
 
+    public function preInsert($event)
+    {
+
+        $identity = Zend_Auth::getInstance()->getIdentity();
+
+        $invoker = $event->getInvoker();
+
+        $invoker->user_id = $identity->id;
+    }
 }
 

@@ -9,11 +9,13 @@ User_Model_Mapper_User:
     login:
       type: string(255)
     password:
-      type: string(32)
-    role_id:
-      type: integer(11)
-    active:
-      type: boolean
+      type: string(40)
+    role:
+      type: enum
+      values:
+        - MANAGER
+        - ADMIN
+      default: MANAGER
     firstname:
       type: string(255)
     lastname:
@@ -30,57 +32,3 @@ User_Model_Mapper_User:
       type: string(255)
     token_date:
       type: datetime
-  relations:
-    Role:
-      class: User_Model_Mapper_Role
-      local: role_id
-      foreign: id
-      type: one
-
-User_Model_Mapper_Role:
-  connection: doctrine
-  tableName: user_roles
-  columns:
-    id:
-      type: integer(11)
-      primary: true
-      autoincrement: true
-    name:
-      type: string(255)
-    parent_id:
-      type: integer(11)
-    is_default:
-      type: boolean
-    register:
-      type: boolean
-  relations:
-    Rules:
-      class: User_Model_Mapper_Rule
-      local: id
-      foreign: role_id
-      type: many
-
-User_Model_Mapper_Rule:
-  connection: doctrine
-  tableName: user_rules
-  columns:
-    id:
-      type: integer(11)
-      primary: true
-      autoincrement: true
-    role_id:
-      type: integer(11)
-    resource_id:
-      type: string(50)
-    rule:
-      type: enum
-      values:
-        - allow
-        - deny
-      default: allow
-  relations:
-    Role:
-      class: User_Model_Mapper_Role
-      local: role_id
-      foreign: id
-      type: one

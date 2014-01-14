@@ -10,8 +10,7 @@ Doctrine_Manager::getInstance()->bindComponent('User_Model_Mapper_BaseUser', 'do
  * @property integer $id
  * @property string $login
  * @property string $password
- * @property integer $role_id
- * @property boolean $active
+ * @property enum $role
  * @property string $firstname
  * @property string $lastname
  * @property string $birth
@@ -20,7 +19,10 @@ Doctrine_Manager::getInstance()->bindComponent('User_Model_Mapper_BaseUser', 'do
  * @property string $zip
  * @property string $token
  * @property datetime $token_date
- * @property User_Model_Mapper_Role $Role
+ * @property Doctrine_Collection $Members
+ * @property Doctrine_Collection $Subscriptions
+ * @property Doctrine_Collection $Visits
+ * @property Doctrine_Collection $Sales
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -42,16 +44,18 @@ class User_Model_Mapper_BaseUser extends Doctrine_Record
              'type' => 'string',
              'length' => '255',
              ));
-        $this->hasColumn('password', 'string', 32, array(
+        $this->hasColumn('password', 'string', 40, array(
              'type' => 'string',
-             'length' => '32',
+             'length' => '40',
              ));
-        $this->hasColumn('role_id', 'integer', 11, array(
-             'type' => 'integer',
-             'length' => '11',
-             ));
-        $this->hasColumn('active', 'boolean', null, array(
-             'type' => 'boolean',
+        $this->hasColumn('role', 'enum', null, array(
+             'type' => 'enum',
+             'values' => 
+             array(
+              0 => 'MANAGER',
+              1 => 'ADMIN',
+             ),
+             'default' => 'MANAGER',
              ));
         $this->hasColumn('firstname', 'string', 255, array(
              'type' => 'string',
@@ -89,8 +93,20 @@ class User_Model_Mapper_BaseUser extends Doctrine_Record
     public function setUp()
     {
         parent::setUp();
-        $this->hasOne('User_Model_Mapper_Role as Role', array(
-             'local' => 'role_id',
-             'foreign' => 'id'));
+        $this->hasMany('Members_Model_Mapper_Member as Members', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
+
+        $this->hasMany('Members_Model_Mapper_Subscription as Subscriptions', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
+
+        $this->hasMany('Members_Model_Mapper_Visit as Visits', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
+
+        $this->hasMany('Products_Model_Mapper_Sale as Sales', array(
+             'local' => 'id',
+             'foreign' => 'user_id'));
     }
 }

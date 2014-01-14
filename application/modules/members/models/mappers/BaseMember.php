@@ -15,6 +15,8 @@ Doctrine_Manager::getInstance()->bindComponent('Members_Model_Mapper_BaseMember'
  * @property string $lastname
  * @property date $birth_date
  * @property string $phone
+ * @property integer $user_id
+ * @property User_Model_Mapper_User $User
  * @property Doctrine_Collection $Subscriptions
  * @property Doctrine_Collection $Visits
  * 
@@ -44,7 +46,6 @@ class Members_Model_Mapper_BaseMember extends Doctrine_Record
              ));
         $this->hasColumn('email', 'string', 255, array(
              'type' => 'string',
-             'unique' => true,
              'length' => '255',
              ));
         $this->hasColumn('sex', 'enum', null, array(
@@ -68,17 +69,25 @@ class Members_Model_Mapper_BaseMember extends Doctrine_Record
              ));
         $this->hasColumn('birth_date', 'date', null, array(
              'type' => 'date',
-             'notnull' => true,
              ));
         $this->hasColumn('phone', 'string', 64, array(
              'type' => 'string',
              'length' => '64',
+             ));
+        $this->hasColumn('user_id', 'integer', 11, array(
+             'type' => 'integer',
+             'length' => '11',
              ));
     }
 
     public function setUp()
     {
         parent::setUp();
+        $this->hasOne('User_Model_Mapper_User as User', array(
+             'local' => 'user_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
+
         $this->hasMany('Members_Model_Mapper_Subscription as Subscriptions', array(
              'local' => 'id',
              'foreign' => 'member_id'));

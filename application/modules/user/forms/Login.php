@@ -13,7 +13,7 @@ class User_Form_Login extends Zend_Form
     public function init()
     {
 
-        $this->setMethod('POST')->setAttrib('class', 'login-form')->loadDefaultDecorators()->removeDecorator('HtmlTag');
+        $this->setMethod('POST');
 
         $loginElement = new Zend_Form_Element_Text('login');
 
@@ -27,14 +27,11 @@ class User_Form_Login extends Zend_Form
         $passwordElement->setRequired(true);
         $this->addElement($passwordElement);
 
-        $remember = new Zend_Form_Element_Checkbox('remember');
-        $remember->setLabel('Remember me')->setRequired();
-        $this->addElement($remember);
-
         $submitElement = new Zend_Form_Element_Submit('submit');
 
         $submitElement->setLabel('Login');
         $submitElement->setIgnore(true);
+        $submitElement->setAttrib('class', 'button');
         $this->addElement($submitElement);
     }
 

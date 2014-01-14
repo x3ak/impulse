@@ -49,5 +49,15 @@ class Members_Model_Mapper_Subscription extends Members_Model_Mapper_BaseSubscri
         if(!empty($next))
             $next->activate();
     }
+
+    public function preInsert($event)
+    {
+
+        $identity = Zend_Auth::getInstance()->getIdentity();
+
+        $invoker = $event->getInvoker();
+
+        $invoker->user_id = $identity->id;
+    }
 }
 

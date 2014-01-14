@@ -9,7 +9,9 @@ Doctrine_Manager::getInstance()->bindComponent('Products_Model_Mapper_BaseSale',
  * 
  * @property integer $id
  * @property integer $product_id
+ * @property integer $user_id
  * @property Products_Model_Mapper_Product $Product
+ * @property User_Model_Mapper_User $User
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -34,6 +36,10 @@ class Products_Model_Mapper_BaseSale extends Doctrine_Record
              'notnull' => true,
              'length' => '11',
              ));
+        $this->hasColumn('user_id', 'integer', 11, array(
+             'type' => 'integer',
+             'length' => '11',
+             ));
     }
 
     public function setUp()
@@ -41,7 +47,13 @@ class Products_Model_Mapper_BaseSale extends Doctrine_Record
         parent::setUp();
         $this->hasOne('Products_Model_Mapper_Product as Product', array(
              'local' => 'product_id',
-             'foreign' => 'id'));
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
+
+        $this->hasOne('User_Model_Mapper_User as User', array(
+             'local' => 'user_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
 
         $timestampable0 = new Doctrine_Template_Timestampable();
         $this->actAs($timestampable0);

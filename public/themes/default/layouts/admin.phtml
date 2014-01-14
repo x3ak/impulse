@@ -4,7 +4,7 @@
     <?php
         $this->headLink()->appendStylesheet('/themes/default/css/admin/main.css');
         $this->headLink()->appendStylesheet('/themes/default/css/admin/modal-dialog.css');
-        $this->headScript()->appendFile('http://code.jquery.com/jquery.js');
+        $this->headScript()->appendFile('/themes/default/js/jquery.js');
         $this->headScript()->appendFile('/themes/default/js/ui-buttons.js');
         $this->headScript()->appendFile('/themes/default/js/modal-dialog.js');
 
@@ -81,11 +81,11 @@
 <div id="main-content">
     <div id="navbar-container">
         <img src="/themes/default/images/logo.jpg" width="200" />
-        <?php //echo $this->link('new visit', $this->url(array('module'=>'members','controller'=>'visit', 'action'=>'new'),'default', true), array('class'=>'button plus-icon grey-button new-visit-button'));?>
-    <?php
-    if (!empty($this->layout()->left))
-        echo $this->layout()->left;
-    ?>
+
+        <?php
+        echo $this->navigation()->menu();
+        ?>
+
         <div id="fast-visit">
             <input name="id" autocomplete="off" type="text" id="fast-visit-field" />
             <div id="visit-loader"><img src="/themes/default/images/ajax-loader.gif" alt="loading..."></div>
@@ -110,7 +110,7 @@
 
     </div>
     <div id="mainview">
-        <?php echo $this->layout()->messages; ?>
+        <?php echo $this->flashMessenger(); ?>
 
         <?php echo $this->layout()->top; ?>
         <div id="mainview-content"><?php echo $this->layout()->content;?></div>

@@ -39,7 +39,6 @@ class User_AdminController extends Zend_Controller_Action
     public function usersAction()
     {
         $filter = array();
-        $filter['role'] = $this->getRequest()->getParam('role');
 
         $usersModel = new User_Model_Users();
         $this->view->pager = $usersModel->getUsersPager(
@@ -57,7 +56,6 @@ class User_AdminController extends Zend_Controller_Action
     {
         $form = new User_Form_User();
         $usersModel = new User_Model_Users();
-        $rolesModel = new User_Model_Roles();
 
         $id = $this->getRequest()->getParam('id');
 
@@ -67,16 +65,14 @@ class User_AdminController extends Zend_Controller_Action
             $user = new User_Model_Mapper_User();
         }
 
-        foreach ($rolesModel->getList() as $role)
-            $form->getElement('role_id')->addMultiOption($role->id, $role->name);
 
-        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {  
+        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             $result = $usersModel->saveUser($user, $form->getValues());
             $this->_helper->getHelper('FlashMessenger')->addMessage('User successful saved.');
             $this->_helper->getHelper('redirector')->goToRoute(array('module' => 'user', 'action' => 'users'), 'admin', true);
 
             return;
-        } elseif(!$this->getRequest()->isPost()) {            
+        } elseif(!$this->getRequest()->isPost()) {
             $form->populate($user->toArray());
         }
 
@@ -98,59 +94,4 @@ class User_AdminController extends Zend_Controller_Action
         $this->_helper->getHelper('redirector')->goToRoute(array('module' => 'user', 'action' => 'users'), 'admin', true);
     }
 
-    public function rolesAction()
-    {
-        $rolesModel = new User_Model_Roles();
-        $this->view->pager = $rolesModel->getRolesPager(
-                        $this->getRequest()->getParam('page', 1),
-                        $this->getRequest()->getParam('perPage', 20)
-        );
-    }
-
-    /**
-     * Edit user action
-     * @return null
-     */
-    public function editRoleAction()
-    {
-        $form = new User_Form_Role();
-        $rolesModel = new User_Model_Roles();
-
-        $role = $rolesModel->getRole($this->getRequest()->getParam('id'), true);
-
-        $form->populate($role->toArray());
-
-        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
-            $result = $rolesModel->saveRole($role, $form->getValues());
-            if($result)
-                $this->_helper->getHelper('FlashMessenger')->addMessage('Role successful saved.');
-            $this->_helper->getHelper('redirector')->goToRoute(array('module' => 'user', 'action' => 'roles'), 'admin', true);
-            return;
-        }
-
-        $this->view->editRoleForm = $form;
-    }
-
-    /**
-     * Delete role action
-     */
-    public function deleteRoleAction()
-    {
-        $id = $this->getRequest()->getParam('id');
-        if (!empty($id)) {
-            $rolesModel = new User_Model_Roles();
-            $role = $rolesModel->getRole($id);
-            $role->delete();
-        }
-        $this->_helper->getHelper('FlashMessenger')->addMessage('Role successful deleted.');
-        $this->_helper->getHelper('redirector')->goToRoute(array('module' => 'user', 'action' => 'roles'), 'admin', true);
-    }
-
-    /**
-     * Setting display action
-     */
-    public function settingsAction()
-    {
-
-    }
 }

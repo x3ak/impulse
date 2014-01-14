@@ -15,7 +15,7 @@ Doctrine_Manager::getInstance()->bindComponent('Members_Model_Mapper_BaseSubscri
  * @property time $enter_time
  * @property time $exit_time
  * @property integer $visits_per_week
- * @property decimal $price
+ * @property integer $price
  * @property Doctrine_Collection $Subscriptions
  * 
  * @package    ##PACKAGE##
@@ -71,10 +71,11 @@ class Members_Model_Mapper_BaseSubscriptionType extends Doctrine_Record
              'type' => 'integer',
              'length' => '4',
              ));
-        $this->hasColumn('price', 'decimal', 10, array(
-             'type' => 'decimal',
-             'scale' => 2,
-             'length' => '10',
+        $this->hasColumn('price', 'integer', 4, array(
+             'type' => 'integer',
+             'unsigned' => true,
+             'notnull' => true,
+             'length' => '4',
              ));
     }
 

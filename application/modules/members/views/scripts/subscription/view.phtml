@@ -43,6 +43,7 @@ $subscription = $this->mapper;
 </table>
 
 <div>
-<?php echo $this->link('cancel', $this->url(array('action'=>'cancel')), array('class'=>'button red-button flRight'));?>&nbsp;
+    <?php echo $this->link('edit', $this->url(array('action'=>'edit-subscription')), array('class'=>'button'));?>&nbsp;
+    <?php /*echo $this->link('cancel', $this->url(array('action'=>'cancel')), array('class'=>'button red-button flRight')); */?>&nbsp;&nbsp;
     <div style="clear: both;"></div>
 </div>

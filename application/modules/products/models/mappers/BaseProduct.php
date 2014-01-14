@@ -10,8 +10,9 @@ Doctrine_Manager::getInstance()->bindComponent('Products_Model_Mapper_BaseProduc
  * @property integer $id
  * @property string $title
  * @property decimal $price
+ * @property integer $amount
+ * @property boolean $active
  * @property Doctrine_Collection $Sales
- * @property Doctrine_Collection $Stock
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -41,16 +42,22 @@ class Products_Model_Mapper_BaseProduct extends Doctrine_Record
              'notnull' => true,
              'length' => '10',
              ));
+        $this->hasColumn('amount', 'integer', 11, array(
+             'type' => 'integer',
+             'unsigned' => true,
+             'notnull' => true,
+             'length' => '11',
+             ));
+        $this->hasColumn('active', 'boolean', null, array(
+             'type' => 'boolean',
+             'default' => true,
+             ));
     }
 
     public function setUp()
     {
         parent::setUp();
         $this->hasMany('Products_Model_Mapper_Sale as Sales', array(
-             'local' => 'id',
-             'foreign' => 'product_id'));
-
-        $this->hasMany('Products_Model_Mapper_Stock as Stock', array(
              'local' => 'id',
              'foreign' => 'product_id'));
 

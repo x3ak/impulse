@@ -16,6 +16,13 @@ Products_Model_Mapper_Product:
       type: decimal(10)
       scale: 2
       notnull: true
+    amount:
+      type: integer(11)
+      unsigned: true
+      notnull: true
+    active:
+      type: boolean
+      default: true
 
 Products_Model_Mapper_Sale:
   connection: doctrine
@@ -30,36 +37,18 @@ Products_Model_Mapper_Sale:
       type: integer(11)
       unsigned: true
       notnull: true
+    user_id:
+      type: integer(11)
   relations:
     Product:
       class: Products_Model_Mapper_Product
       local: product_id
       foreign: id
       foreignAlias: Sales
-
-Products_Model_Mapper_Stock:
-  connection: doctrine
-  tableName: products_stock
-  columns:
-    id:
-      type: integer(11)
-      unsigned: true
-      primary: true
-      autoincrement: true
-    product_id:
-      type: integer(11)
-      unsigned: true
-      notnull: true
-    amount:
-      type: integer(11)
-      unsigned: true
-      notnull: true
-    date:
-      type: date
-      notnull: true
-  relations:
-    Product:
-      class: Products_Model_Mapper_Product
-      local: product_id
+      onDelete: CASCADE
+    User:
+      class: User_Model_Mapper_User
+      local: user_id
       foreign: id
-      foreignAlias: Stock
+      foreignAlias: Sales
+      onDelete: SET NULL

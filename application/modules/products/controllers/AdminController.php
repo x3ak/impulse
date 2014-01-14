@@ -50,10 +50,18 @@ class Products_AdminController extends Zend_Controller_Action
         if(!empty($id)) {
             $mapper = Products_Model_DbTable_Product::getInstance()->findOneBy('id', $id);
             $mapper->buy();
+
+            $this->_helper->getHelper('FlashMessenger')->addMessage('product sold');
+            $this->_helper->redirector->goToRoute(array(
+                'module' => 'products',
+                'action' => 'buy'
+            ), 'admin', true);
         }
 
-        $list = Products_Model_DbTable_Product::getInstance()->findAll();
+        $list = Products_Model_DbTable_Product::getInstance()->getList();
         $this->view->list = $list;
         $this->view->productsCount = $list->count();
     }
+
+
 }

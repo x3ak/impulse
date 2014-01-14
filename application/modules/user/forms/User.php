@@ -24,16 +24,17 @@ class User_Form_User extends Zend_Form
         $this->addElement($loginElement);
 
 
-        $roleModel = new User_Model_Roles();
-        $roles = $roleModel->getRegistrationRoles();
-        $options = array(''=>'');
-        foreach($roles as $role) {
-            $options[$role->id] = $role->name;
-        }
+        $password = new Zend_Form_Element_Text('password');
+        $password->setLabel('Password');
+        $this->addElement($password);
 
-        $type = new Zend_Form_Element_Select('role_id');
-        $type->addMultiOptions($options)->setRequired()->setLabel('user_type');
-        $this->addElement($type);
+        $role = new Zend_Form_Element_Select('role');
+        $role->setLabel('Role');
+        $role->setMultiOptions(array(
+            'MANAGER' => 'MANAGER',
+            'ADMIN' => 'ADMIN'
+        ));
+        $this->addElement($role);
 
         $firstname = new Zend_Form_Element_Text('firstname');
         $firstname->setRequired()->addValidator(new Zend_Validate_Alpha)->setLabel('firstname');
@@ -74,5 +75,12 @@ class User_Form_User extends Zend_Form
         $this->populate($data);
         return parent::isValid($data);
     }
+
+    public function setDefaults(array $defaults)
+    {
+        $defaults['password'] = '';
+        return parent::setDefaults($defaults);
+    }
+
 
 }

@@ -1,4 +1,5 @@
-<?php $this->adminCurrentSubmenu(); ?>
+<h1>Users</h1>
+<?php echo $this->link('create_new_user', $this->url(array('module'=>'user','controller'=>'admin','action'=>'edit-user'),'default',true), array('class'=>'button plus-icon'));?>
 <table class="admin-table-list">
 	<tr>
 		<th width="20"><?php echo $this->translate('ID'); ?></th>
@@ -6,7 +7,6 @@
 		<th><?php echo $this->translate('firstname'); ?></th>
 		<th><?php echo $this->translate('lastname'); ?></th>
 		<th width="50"><?php echo $this->translate('role'); ?></th>
-		<th width="20"><?php echo $this->translate('active'); ?></th>
 		<th width="10"><?php echo $this->translate('actions'); ?></th>
 	</tr>
 	<?php foreach ($this->pager->execute() as $item) {?>
@@ -15,12 +15,11 @@
 		<td><?php echo $item->login; ?></td>
 		<td><?php echo $item->firstname; ?></td>
 		<td><?php echo $item->lastname; ?></td>
-		<td><?php echo $this->translate($item->Role->name); ?></td>
-                <td style="text-align: center;"><input type="checkbox" <?php if($item->active) echo 'checked="checked"' ?> disabled="disabled" /></td>
-		<td align="center" nowrap="nowrap">
-			<a class="edit-item" href="<?php echo $this->url(array('action'=>'edit-user','module'=>'user', 'id'=>$item->id));?>">
-				<?php echo $this->translate('edit'); ?>
-			</a>&nbsp;
+		<td width="100"><?php echo $item->role; ?></td>
+		<td><a class="edit-item" href="<?php echo $this->url(array('action'=>'edit-user','module'=>'user', 'id'=>$item->id));?>">
+            <?php echo $this->translate('edit'); ?>
+        </a></td>
+		<td>
 			<a  class="delete-item" href="<?php echo $this->url(array('action'=>'delete-user','module'=>'user', 'id'=>$item->id));?>">
 				<?php echo $this->translate('delete'); ?>
 			</a>

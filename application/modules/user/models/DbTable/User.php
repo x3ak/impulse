@@ -31,7 +31,6 @@ class User_Model_DbTable_User extends Doctrine_Table
             return Doctrine_Query::create()
                     ->select()
                     ->from('User_Model_Mapper_User user')
-                    ->leftJoin('user.Role role')
                     ->addWhere('user.id = ?', array($id))
                     ->fetchOne();
     }
@@ -39,31 +38,18 @@ class User_Model_DbTable_User extends Doctrine_Table
     public function getUsers()
     {
             $query = Doctrine_Query::create()
-                            ->select('user.*, role.*')
-                            ->from('User_Model_Mapper_User user')
-                            ->leftJoin('user.Role role');
+                            ->select()
+                            ->from('User_Model_Mapper_User user');
 
             return $query->execute();
     }
 
-    public function getPager($page = 1, $maxPerPage = 20, array $filter = array())
+    public function getPager($page = 1, $maxPerPage = 20)
     {
-        $roleTable = User_Model_DbTable_Rule::getInstance();
         $query = Doctrine_Query::create()
-                        ->select('user.*, role.*')
-                        ->from('User_Model_Mapper_User user')
-                        ->leftJoin('user.Role role');
+                        ->select()
+                        ->from('User_Model_Mapper_User user');
 
-        foreach ($filter as $key=>$value) {
-
-            switch($key) {
-               case 'role':
-                   $query->addWhere('role.name = ?',array($value));
-               break;
-            }
-
-
-        }
 
         return new Doctrine_Pager($query, $page, $maxPerPage);
     }

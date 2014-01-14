@@ -23,8 +23,8 @@ class Members_Form_Edit extends Zend_Form
 
         $email = new Zend_Form_Element_Text('email');
         $email->setLabel('email');
-        $email->setRequired(false)->setAllowEmpty(true);
         $email->addValidator(new Zend_Validate_EmailAddress());
+        $email->setRequired()->setAllowEmpty(false);
         $this->addElement($email);
 
         $photo = new Zend_Form_Element_File('photo');
@@ -57,12 +57,11 @@ class Members_Form_Edit extends Zend_Form
 
         $birthdate = new Zend_Form_Element_Text('birth_date');
         $birthdate->setLabel('birth_date');
-        $birthdate->setRequired()->setAllowEmpty(false);
         $this->addElement($birthdate);
 
         $phone = new Zend_Form_Element_Text('phone');
         $phone->setLabel('phone');
-        $phone->setRequired(false)->setAllowEmpty(true);
+
         $this->addElement($phone);
 
         $save = new Zend_Form_Element_Submit('save');
@@ -70,4 +69,61 @@ class Members_Form_Edit extends Zend_Form
         $this->addElement($save);
 
     }
+
+    public function setDefaults(array $defaults)
+    {
+        if(empty($defaults['id'])) {
+            $subscriptionType = new Zend_Form_Element_Select('subscription_type');
+
+            $subscriptionType->setLabel('Subscription');
+
+            $list = Members_Model_DbTable_SubscriptionType::getInstance()->findAll();
+            foreach($list as $subscription) {
+                $subscriptionType->addMultiOption($subscription->id, $subscription->title . ' - '.$subscription->price);
+            }
+
+            $subscriptionType->setOrder(2);
+            $this->addElement($subscriptionType);
+
+
+        } else {
+            $identity = Zend_Auth::getInstance()->getIdentity();
+
+            if($identity->role != 'ADMIN') {
+                $number = new Zend_Form_Element_Hidden('number');
+                $number->setLabel('number');
+                $number->setRequired()->setAllowEmpty(false);
+                $number->addValidator(new Zend_Validate_Int());
+                $number->setDescription($defaults['number']);
+                $this->addElement($number);
+
+
+                $firstname = new Zend_Form_Element_Hidden('firstname');
+                $firstname->setLabel('firstname');
+                $firstname->setRequired()->setAllowEmpty(false);
+                $firstname->addValidator(new Zend_Validate_Alnum());
+                $firstname->setDescription($defaults['firstname']);
+                $this->addElement($firstname);
+
+                $firstname = new Zend_Form_Element_Hidden('lastname');
+                $firstname->setLabel('lastname');
+                $firstname->setRequired()->setAllowEmpty(false);
+                $firstname->addValidator(new Zend_Validate_Alnum());
+                $firstname->setDescription($defaults['lastname']);
+                $this->addElement($firstname);
+
+                $firstname = new Zend_Form_Element_Hidden('sex');
+                $firstname->setLabel('sex');
+                $firstname->setRequired()->setAllowEmpty(false);
+                $firstname->addValidator(new Zend_Validate_Alnum());
+                $firstname->setDescription($defaults['sex']);
+                $this->addElement($firstname);
+            }
+
+
+        }
+        return parent::setDefaults($defaults);
+    }
+
+
 }

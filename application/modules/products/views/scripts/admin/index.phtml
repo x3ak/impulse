@@ -7,11 +7,12 @@
     <?php
     /** @var $product Products_Model_Mapper_Product */
     foreach($this->list as $product):
-
+        $editURL = $this->url(array('module'=>'products', 'action'=>'edit','id'=>$product->id), 'admin', true);
         ?>
-            <td width="20" onclick="window.location.href = '<?php echo $this->url(array('action'=>'edit','id'=>$product->id));?>' "></td>
-            <td width="60" onclick="window.location.href = '<?php echo $this->url(array('action'=>'edit','id'=>$product->id));?>' "><?php echo $product->price?></td>
-            <td onclick="window.location.href = '<?php echo $this->url(array('action'=>'edit','id'=>$product->id));?>' "><?php echo $product->title?></td>
+        <tr class="row">
+            <td width="160" onclick="window.location.href = '<?=$editURL?>' ">Price: <?php echo $product->price?></td>
+            <td width="160" onclick="window.location.href = '<?=$editURL?>' ">In stock: <?php echo $product->amount?></td>
+            <td onclick="window.location.href = '<?=$editURL?>' "><?php echo $product->title?></td>
         </tr>
         <?php endforeach;?>
 </table>

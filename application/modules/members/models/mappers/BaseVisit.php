@@ -13,8 +13,10 @@ Doctrine_Manager::getInstance()->bindComponent('Members_Model_Mapper_BaseVisit',
  * @property time $enter_time
  * @property time $exit_time
  * @property integer $subscription_id
+ * @property integer $user_id
  * @property Members_Model_Mapper_Member $Member
  * @property Members_Model_Mapper_Subscription $Subscription
+ * @property User_Model_Mapper_User $User
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -56,6 +58,10 @@ class Members_Model_Mapper_BaseVisit extends Doctrine_Record
              'notnull' => true,
              'length' => '11',
              ));
+        $this->hasColumn('user_id', 'integer', 11, array(
+             'type' => 'integer',
+             'length' => '11',
+             ));
     }
 
     public function setUp()
@@ -63,11 +69,18 @@ class Members_Model_Mapper_BaseVisit extends Doctrine_Record
         parent::setUp();
         $this->hasOne('Members_Model_Mapper_Member as Member', array(
              'local' => 'member_id',
-             'foreign' => 'id'));
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
 
         $this->hasOne('Members_Model_Mapper_Subscription as Subscription', array(
              'local' => 'subscription_id',
-             'foreign' => 'id'));
+             'foreign' => 'id',
+             'onDelete' => 'CASCADE'));
+
+        $this->hasOne('User_Model_Mapper_User as User', array(
+             'local' => 'user_id',
+             'foreign' => 'id',
+             'onDelete' => 'SET NULL'));
 
         $timestampable0 = new Doctrine_Template_Timestampable();
         $this->actAs($timestampable0);
