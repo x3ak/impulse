@@ -1,1 +1,0 @@
-php ./slys.php doctrine:generate-models

@@ -1,7 +1,0 @@
-User_Model_Mapper_User:
-  User:
-    login: admin
-    firstname: Администратор
-    lastname: Администратор
-    password: 3640798cee56b6a002b9ebd79cf1f9150081bbe1
-    role: ADMIN
